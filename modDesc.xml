@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="63">
+
+    <author>StingerTopGun</author>
+    <version>1.0.0.0</version>
+
+    <title>
+		<en>Contract HUD</en>	
+	</title>
+
+	<iconFilename>modIcon.dds</iconFilename>
+	
+	<multiplayer supported="true"/>
+    
+	<description>
+        <de><![CDATA[Hilfreiche kleine HUD Anzeige des aktuellen Fertigstellungsgrades aller aktiver Verträge
+
+Steuerung:
+ALT + W  -  Schalte zwischen 3 Anzeigemöglichkeiten (Voll, keine Fortschrittsbalken, Aus)]]></de>
+		<en><![CDATA[Helpful small HUD displaying the current completion percentage of all active contracts
+        
+Hotkeys:
+ALT + W  -  Toggle between 3 possible modes (full, no progressbar, hidden)]]></en>
+    </description>
+
+	<extraSourceFiles>
+		<sourceFile filename="ContractHUD.lua" />
+	</extraSourceFiles>
+
+	<l10n>
+		<text name="input_CH_toggle_displaymode">
+			<de><![CDATA[Contract HUD umschalten]]></de>
+			<en><![CDATA[Contract HUD toggle]]></en>
+		</text>
+        <text name="CH_field">
+            <de><![CDATA[Feld]]></de>
+            <en><![CDATA[Field]]></en>
+        </text>
+        <text name="CH_headline">
+            <de><![CDATA[Aktive Verträge: ]]></de>
+            <en><![CDATA[Active Contracts: ]]></en>
+        </text>
+	</l10n>
+
+	<actions>
+		<action name="CH_toggle_displaymode" axisType="HALF" />
+    </actions>
+
+    <inputBinding>
+        <actionBinding action="CH_toggle_displaymode" >
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_lalt KEY_m" />
+        </actionBinding>
+    </inputBinding>
+
+</modDesc>
