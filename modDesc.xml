@@ -16,11 +16,11 @@
         <de><![CDATA[Hilfreiche kleine HUD Anzeige des aktuellen Fertigstellungsgrades aller aktiver Verträge
 
 Steuerung:
-ALT + W  -  Schalte zwischen 3 Anzeigemöglichkeiten (Voll, keine Fortschrittsbalken, Aus)]]></de>
+ALT + M  -  Schalte zwischen 3 Anzeigemöglichkeiten (Voll, keine Fortschrittsbalken, Aus)]]></de>
 		<en><![CDATA[Helpful small HUD displaying the current completion percentage of all active contracts
         
 Hotkeys:
-ALT + W  -  Toggle between 3 possible modes (full, no progressbar, hidden)]]></en>
+ALT + M  -  Toggle between 3 possible modes (full, no progressbar, hidden)]]></en>
     </description>
 
 	<extraSourceFiles>
