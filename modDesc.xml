@@ -40,7 +40,7 @@ Version 1.1.0.0: (the.geremy)
     - show also fruit type when available (barley, wheat, oat ...)
 - when zero progress (progressBar / percentage) show other info (fruit type, remaining time, contracted litters)
 - when progress show only field number and progress bar or percentage
-- enhanced progressBar
+- enhanced progress bar
     - now each bar means 5% exactly - | "full bar"
     - also sow progress by 2.5% - ¦ "half bar"
 - support for supplyTransport missions mod
