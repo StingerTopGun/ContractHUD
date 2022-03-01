@@ -5,7 +5,7 @@ Helpful small HUD displaying the current completion percentage of all active con
 ![](screenshots/3_small.png?raw=true)
 
 ### Hotkeys:
-ALT + W  -  Toggle between 3 possible modes (progress bar, percentage [default], hidden)
+ALT + M  -  Toggle between 3 possible modes (progress bar, percentage [default], hidden)
 
 Version 1.1.0.0: (the.geremy)
 - autohide info when no active missions
