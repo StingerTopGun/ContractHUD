@@ -114,7 +114,7 @@ function ContractHUD:draw()
                 if ContractHUD.displayMode == 0 then
                     if contract.type.name == "supplyTransport" then
                         if completion == 0 then -- when 0%, display remianing time
-                            outputText = field_text .. " - " .. field_work .. ContractHUD:formatLitters(contract.contractLiters) .. " [" .. ContractHUD:getRemainingTime(contract) .."]"
+                            outputText = field_text .. " - " .. field_work .. " " .. ContractHUD:formatLitters(contract.contractLiters) .. " [" .. ContractHUD:getRemainingTime(contract) .."]"
                         else -- else progress bar                            
                             outputText = field_text .. " - " .. field_work .. " " .. ContractHUD:buildProgressBar(completion)
                         end
