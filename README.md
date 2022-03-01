@@ -4,6 +4,8 @@ Helpful small HUD displaying the current completion percentage of all active con
 
 ![](screenshots/v1.1.0.0.png?raw=true)
 
+![](screenshots/v1.1.0.0_2.png?raw=true)
+
 ### Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (progress bar, percentage [default], hidden)
 
