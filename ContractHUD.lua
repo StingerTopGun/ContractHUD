@@ -59,7 +59,7 @@ function ContractHUD:draw()
 
 		local posX = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.x
         local posY = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.y
-		local size = g_currentMission.inGameMenu.hud.inputHelp.helpTextSize * 1.15 -- add 10%
+		local size = g_currentMission.inGameMenu.hud.inputHelp.helpTextSize * 1.18 -- add 18%
         posY = posY + g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.height - g_currentMission.inGameMenu.hud.inputHelp.helpTextSize
         posX = posX - ( g_currentMission.inGameMenu.hud.inputHelp.helpTextOffsetY * 2 )
 

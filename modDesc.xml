@@ -23,6 +23,9 @@ Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (full, no progressbar, hidden)
 
 Version 1.1.0.1: (the.geremy)
+- row height adjustment + 18%
+
+Version 1.1.0.1: (the.geremy)
 - small displaying adjustments (in same cases text was too long)
 - when zero progress show contracted litters or remaining time (percentage mode / progress bar mode)
 - row height adjustment + 15%

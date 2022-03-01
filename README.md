@@ -9,6 +9,14 @@ Helpful small HUD displaying the current completion percentage of all active con
 ### Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (progress bar, percentage [default], hidden)
 
+Version 1.1.0.1: (the.geremy)
+- row height adjustment + 18%
+
+Version 1.1.0.1: (the.geremy)
+- small displaying adjustments (in same cases text was too long)
+- when zero progress show contracted litters or remaining time (percentage mode / progress bar mode)
+- row height adjustment + 15%
+
 Version 1.1.0.0: (the.geremy)
 - autohide info when no active missions
 - change of colors to see it better during day and night
