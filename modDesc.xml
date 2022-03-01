@@ -2,7 +2,7 @@
 <modDesc descVersion="63">
 
     <author>StingerTopGun, the.geremy</author>
-    <version>1.1.0.0</version>
+    <version>1.1.0.1</version>
 
     <title>
 		<en>Contract HUD</en>	
@@ -22,10 +22,15 @@ ALT + M  -  Schalte zwischen 3 Anzeigemöglichkeiten (Voll, keine Fortschrittsba
 Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (full, no progressbar, hidden)
 
+Version 1.1.0.1: (the.geremy)
+- small displaying adjustments (in same cases text was too long)
+- when zero progress show contracted litters or remaining time (percentage mode / progress bar mode)
+- row height adjustment + 15%
+
 Version 1.1.0.0: (the.geremy)
 - autohide info when no active missions
 - change of colors to see it better during day and night
-- row height adjustment
+- row height adjustment + 10%
 - show percentage with one decimal number
 - enhance info
     - show field work type (sow, cultivate, harvest...)

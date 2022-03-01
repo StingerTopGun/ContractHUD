@@ -59,7 +59,7 @@ function ContractHUD:draw()
 
 		local posX = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.x
         local posY = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.y
-		local size = g_currentMission.inGameMenu.hud.inputHelp.helpTextSize * 1.1 -- add 10%
+		local size = g_currentMission.inGameMenu.hud.inputHelp.helpTextSize * 1.15 -- add 10%
         posY = posY + g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.height - g_currentMission.inGameMenu.hud.inputHelp.helpTextSize
         posX = posX - ( g_currentMission.inGameMenu.hud.inputHelp.helpTextOffsetY * 2 )
 
@@ -114,7 +114,7 @@ function ContractHUD:draw()
                 if ContractHUD.displayMode == 0 then
                     if contract.type.name == "supplyTransport" then
                         if completion == 0 then -- when 0%, display remianing time
-                            outputText = field_text .. " - " .. field_work .. " " .. ContractHUD:formatLitters(contract.contractLiters) .. " [" .. ContractHUD:getRemainingTime(contract) .."]"
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:getRemainingTime(contract)
                         else -- else progress bar                            
                             outputText = field_text .. " - " .. field_work .. " " .. ContractHUD:buildProgressBar(completion)
                         end
