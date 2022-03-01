@@ -20,7 +20,7 @@ Version 1.1.0.1: (the.geremy)
 Version 1.1.0.0: (the.geremy)
 - autohide info when no active missions
 - change of colors to see it better during day and night
-- row height adjustment
+- row height adjustment + 10%
 - show percentage with one decimal number
 - enhance info
     - show field work type (sow, cultivate, harvest...)
