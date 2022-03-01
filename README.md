@@ -2,7 +2,7 @@
 
 Helpful small HUD displaying the current completion percentage of all active contracts
 
-![](screenshots/v1.1.0.0.png?raw=true)
+![](screenshots/v1.1.0.1.png?raw=true)
 
 ![](screenshots/v1.1.0.0_2.png?raw=true)
 
