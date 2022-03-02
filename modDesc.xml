@@ -2,25 +2,28 @@
 <modDesc descVersion="63">
 
     <author>StingerTopGun, the.geremy</author>
-    <version>1.1.0.2</version>
+    <version>1.1.0.3</version>
 
     <title>
-		<en>Contract HUD</en>	
+		<en>Contract HUD</en>
 	</title>
 
 	<iconFilename>modIcon.dds</iconFilename>
-	
+
 	<multiplayer supported="true"/>
-    
+
 	<description>
         <de><![CDATA[Hilfreiche kleine HUD Anzeige des aktuellen Fertigstellungsgrades aller aktiver Verträge
 
 Steuerung:
 ALT + M  -  Schalte zwischen 3 Anzeigemöglichkeiten (Voll, keine Fortschrittsbalken, Aus)]]></de>
 		<en><![CDATA[Helpful small HUD displaying the current completion percentage of all active contracts
-        
+
 Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (full, no progressbar, hidden)
+
+Version 1.1.0.3: (the.geremy)
+- added translation support
 
 Version 1.1.0.2: (the.geremy)
 - row height adjustment + 18%
@@ -57,14 +60,12 @@ Version 1.1.0.0: (the.geremy)
 		<text name="input_CH_toggle_displaymode">
 			<de><![CDATA[Contract HUD umschalten]]></de>
 			<en><![CDATA[Contract HUD toggle]]></en>
+            <cz><![CDATA[Contract HUD režim]]></cz>
 		</text>
-        <text name="CH_field">
-            <de><![CDATA[Feld]]></de>
-            <en><![CDATA[Field]]></en>
-        </text>
-        <text name="CH_headline">
-            <de><![CDATA[Aktive Verträge: ]]></de>
-            <en><![CDATA[Active Contracts: ]]></en>
+        <text name="CH_supply">
+            <de><![CDATA[Supply]]></de>
+            <en><![CDATA[Lieferung]]></en>
+            <cz><![CDATA[Dodávka]]></cz>
         </text>
 	</l10n>
 

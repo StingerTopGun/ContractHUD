@@ -8,7 +8,11 @@ ContractHUD = {}
 ContractHUD.eventName = {}
 ContractHUD.ModName = g_currentModName
 ContractHUD.ModDirectory = g_currentModDirectory
+<<<<<<< Updated upstream
 ContractHUD.Version = "1.1.0.2"
+=======
+ContractHUD.Version = "1.1.0.3"
+>>>>>>> Stashed changes
 
 ContractHUD.Colors = {}
 ContractHUD.Colors[1]  = {'col_white', {1, 1, 1, 1}}
@@ -20,10 +24,10 @@ ContractHUD.Colors[6]  = {'col_green', {0.0395, 0.2015, 0.0242, 1}}
 ContractHUD.Colors[7]  = {'col_cyan', {0.0003, 0.5647, 0.9822, 1}}
 ContractHUD.Colors[8]  = {'col_orange', {1.0000, 0.1413, 0.0000, 1}}
 ContractHUD.Colors[9]  = {'col_dgreen', {0.1062, 0.5234, 0.1450, 1}}
-ContractHUD.Colors[10]  = {'col_sorange', {1.0000, 0.1830, 0.0210, 1}}
+ContractHUD.Colors[10] = {'col_sorange', {1.0000, 0.1830, 0.0210, 1}}
 
 ContractHUD.HeadlineColor = 7 -- put here color index from above
-ContractHUD.MissionTextColor = 10 -- default active mission color, put here color index from above
+ContractHUD.MissionTextColor = 1 -- default active mission color, put here color index from above
 
 ContractHUD.activeMissons = 0
 
@@ -37,6 +41,9 @@ ContractHUD.displayMode = 1
 function ContractHUD:registerActionEvents()
 	g_inputBinding:registerActionEvent('CH_toggle_displaymode', self, ContractHUD.toggleDisplayMode, false, true, false, true)
 end
+
+--function ContractHUD:onLoad(savegame)
+--end
 
 function ContractHUD:update(dt)
 	-- if zero active missions, check for new active missions (the.geremy)
@@ -63,7 +70,7 @@ function ContractHUD:draw()
         posY = posY + g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.height - g_currentMission.inGameMenu.hud.inputHelp.helpTextSize
         posX = posX - ( g_currentMission.inGameMenu.hud.inputHelp.helpTextOffsetY * 2 )
 
-        local outputText = g_i18n:getText("CH_headline") .. ContractHUD.activeMissons
+        local outputText = ContractHUD:translate("headline") .. ": " .. ContractHUD.activeMissons
         local completion = 0
         local countContracts = 0
 
@@ -88,23 +95,23 @@ function ContractHUD:draw()
                 else  -- contract active, get current completion and set text color
                     completion = contract.completion
                     textColor = ContractHUD.MissionTextColor
-                end        
+                end
 
                 -- handle field_text also for supplyTransport contract
                 if contract.type.name == "supplyTransport" then -- check if supplyTransport contract
-                    field_text = "Supply"
+                    field_text = ContractHUD:translate("transport") --g_i18n:getText("CH_supply")
                 else
-                    field_text = g_i18n:getText("CH_field") .. " " .. contract.field.fieldId
+                    field_text = ContractHUD:translate("field_no") .. " " .. contract.field.fieldId
                 end
 
                 -- add info about field work or fill type if supplyTransport contract
                 if contract.type.name == "supplyTransport" then -- check if supplyTransport contract
-                    field_work = ContractHUD:getFillTypeTitle(contract.fillType) -- fillType has only index, we need to change it to field type name
+                    field_work = ContractHUD:getFillTypeTitle(contract.fillType) -- fillType has only index, we need to change it to field type name, already translated
 					-- contracted liters contract.contractLiters
                 elseif contract.type.name ~= nil then
-                    field_work = ContractHUD:firstToUpper(contract.type.name) -- make first letter Upper case, other type missions like sow, fertilize, harvest....
+                    field_work = ContractHUD:firstToUpper(ContractHUD:translate(contract.type.name)) -- make first letter Upper case and translate, other type missions like sow, fertilize, harvest....
                 else
-                    field_work = "other"
+                    field_work = "N/A"
                 end
 
                 -- displayMode
@@ -115,7 +122,7 @@ function ContractHUD:draw()
                     if contract.type.name == "supplyTransport" then
                         if completion == 0 then -- when 0%, display remianing time
                             outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:getRemainingTime(contract)
-                        else -- else progress bar                            
+                        else -- else progress bar
                             outputText = field_text .. " - " .. field_work .. " " .. ContractHUD:buildProgressBar(completion)
                         end
                     else -- other then supplyTransport contracts
@@ -134,21 +141,21 @@ function ContractHUD:draw()
                 elseif ContractHUD.displayMode == 1 then -- 1 = display without bars, with % number, with field work or fill type info - default
                     if contract.type.name == "supplyTransport" then
                         if completion == 0 then -- when 0%, display contracted liters
-                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatLitters(contract.contractLiters)
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatLitters(contract.contractLiters, 1) .. " " .. (g_currentMission.hud.l10n.unit_literShort or " l")
                         else -- else display percentage
-                            outputText = field_text .. " - " .. field_work .. " - " .. string.format("%.1f", (math.floor(completion * 1000) / 10)) .. " %" -- set percentage to one dec like 95.6%
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatLitters(math.floor(completion * 1000) / 10, nil) .. " %" -- set percentage to one dec like 95.6%
                         end
                     else -- other then supplyTransport contracts
                         if completion == 0 then -- when 0%, display fruit type title
                             if contract.type.name == "sow" then
                                 outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:getFruitTypeName(contract.fruitType)
                             elseif contract.type.name == "harvest" then
-                                outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:getFillTypeTitle(contract.fillType)                                
+                                outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:getFillTypeTitle(contract.fillType)
                             else
                                 outputText = field_text .. " - " .. field_work
                             end
                         else -- else display percentage
-                            outputText = field_text .. " - " .. string.format("%.1f", (math.floor(completion * 1000) / 10)) .. " %" -- set percentage to one dec like 95.6%
+                            outputText = field_text .. " - " .. ContractHUD:formatLitters(math.floor(completion * 1000) / 10, nil) .. " %" -- set percentage to one dec like 95.6%
                         end
                     end
                 end
@@ -158,7 +165,7 @@ function ContractHUD:draw()
                 posY = posY - size  -- shift one line down
 
                 -- handle counting
-                countContracts = countContracts + 1      
+                countContracts = countContracts + 1
             end
         end
 
@@ -166,37 +173,80 @@ function ContractHUD:draw()
 	end
 end
 
-function ContractHUD:formatLitters(number)
-  -- fhis fill format any number
-  -- example
-     -- 1234 >> 1.234
-     -- 123456789.1234 >> 123.456.789
-     -- -123456789.1234 >> 123.456.789
+function ContractHUD:translate(text)
+	local result = ""
 
-  local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
-  local result = ""
+	if  text == "headline" then
+		result = g_currentMission.hud.l10n.texts.ui_pendingMissions
+	elseif text == "mow_bale" then
+		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_baling
+	elseif text == "plow" then
+		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_plowing
+	elseif text == "cultivate" then
+		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_cultivating
+	elseif text == "sow" then
+		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_sowing
+	elseif text == "harvest" then
+		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_harvesting
+	elseif text == "weed" then
+		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_weeding
+	elseif text == "spray" then
+		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_spraying
+	elseif text == "fertilize" then
+		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_fertilizing
+	elseif text == "transport" then
+		result = g_i18n:getText("CH_supply") or g_currentMission.hud.l10n.texts.fieldJob_jobType_transporting
+	elseif text == "field_no" then
+		result = g_currentMission.hud.l10n.texts.ui_fieldNo
+	else
+		result = "N/A"
+	end
 
-  -- reverse the int-string and append a comma to all blocks of 3 digits
-  int = int:reverse():gsub("(%d%d%d)", "%1,")
+	return result
+end
 
-  -- this will return exactly the same number
-  -- reverse the int-string back remove an optional comma and put the 
-  -- optional minus and fractional part back
-  --  int = int:reverse():gsub("(%d%d%d)", "%1,")
+function ContractHUD:formatLitters(number, whole_number)
+	local decimal_separator = g_currentMission.hud.l10n.decimalSeparator or "."
+  	local thousands_grouping = g_currentMission.hud.l10n.thousandsGroupingChar or " "
+  	-- fhis fill format any number
+  	-- example
+    -- 1234 >> 1.234
+    -- 123456789.1234 >> 123.456.789
+    -- -123456789.1234 >> 123.456.789
 
-  -- reverse the int-string back remove an optional comma and put the 
-  -- optional minus and fractional part back
-  -- return minus .. int:reverse():gsub("^,", "") .. fraction
+  	local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
+  	local result = ""
 
-  -- but I need only positive numbers without fraction and with dot separator
-  result = int:reverse():gsub("^,", "")
-  return result:gsub(",", ".") .. " l"
-  
+  	-- reverse the int-string and append a comma to all blocks of 3 digits
+  	int = int:reverse():gsub("(%d%d%d)", "%1" .. thousands_grouping)
+
+  	-- this will return exactly the same number
+  	-- reverse the int-string back remove an optional comma and put the
+  	-- optional minus and fractional part back
+  	--  int = int:reverse():gsub("(%d%d%d)", "%1,")
+
+  	-- reverse the int-string back remove an optional comma and put the
+  	-- optional minus and fractional part back
+  	-- return minus .. int:reverse():gsub("^,", "") .. fraction
+
+	fraction = fraction:sub(2,string.len(fraction))
+	--Receives a string and returns its length.
+
+
+	-- but I need only positive numbers without fraction and with dot separator
+	result = int:reverse():gsub("^" .. thousands_grouping, "")
+
+	--return result:gsub(",", ".") .. " l"
+	if whole_number then
+    	return result
+  	else
+    	return minus .. result  .. decimal_separator .. fraction
+  	end
 end
 
 function ContractHUD:buildProgressBar(completion)
     -- constract text progress bar like this: [||||||||¦:::::]
-    local maxPositions = 20                    
+    local maxPositions = 20
     local currentLevel5 = math.floor((completion / 0.05))
     local modulo5 = (completion % 0.05)
     local currentLevel25 = math.floor((modulo5 / 0.025))
@@ -219,12 +269,12 @@ function ContractHUD:buildProgressBar(completion)
     end
 
     barText = barText .. "]"
-                                        
+
     return barText
 end
 
 function ContractHUD:getFruitTypeName(fruitTypeIndex)
-    if fruitTypeIndex ~= nil and type(fruitTypeIndex) == "number" then 
+    if fruitTypeIndex ~= nil and type(fruitTypeIndex) == "number" then
         local fruitTypeTable = g_fruitTypeManager:getFruitTypeByIndex(fruitTypeIndex)
         return fruitTypeTable ~= nil and ContractHUD:firstToUpper(fruitTypeTable.name) or ""
     end
@@ -236,7 +286,7 @@ function ContractHUD:getTableKeys(tableObject)
     if tableObject ~= nil and type(tableObject) == "table" then
         local keyset={}
         local n=0
-        
+
         for k,v in pairs(tableObject) do
             n=n+1
             keyset[n]=k
@@ -245,14 +295,14 @@ function ContractHUD:getTableKeys(tableObject)
         -- print to log.txt
         print(table.concat(keyset,","))
         --returns concatenated string of table keys
-        return table.concat(keyset,",")        
+        return table.concat(keyset,",")
     end
 
     if tableObject == nil then
         return "NULL2"
     elseif  type(tableObject) == "string" then
         return tableObject
-    else    
+    else
         return type(tableObject)
     end
 end
