@@ -63,8 +63,8 @@ Version 1.1.0.0: (the.geremy)
             <cz><![CDATA[Contract HUD režim]]></cz>
 		</text>
         <text name="CH_supply">
-            <de><![CDATA[Supply]]></de>
-            <en><![CDATA[Lieferung]]></en>
+            <de><![CDATA[Lieferung]]></de>
+            <en><![CDATA[Supply]]></en>
             <cz><![CDATA[Dodávka]]></cz>
         </text>
 	</l10n>
