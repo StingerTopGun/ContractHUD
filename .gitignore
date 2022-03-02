@@ -12,3 +12,5 @@ yarn-error.log
 ~*
 .ini
 .txt
+*.ini
+*.txt
