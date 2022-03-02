@@ -9,6 +9,9 @@ Helpful small HUD displaying the current completion percentage of all active con
 ### Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (progress bar, percentage [default], hidden)
 
+Version 1.1.0.3: (the.geremy)
+- added translation support
+
 Version 1.1.0.2: (the.geremy)
 - row height adjustment + 18%
 
