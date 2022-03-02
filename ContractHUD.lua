@@ -8,11 +8,7 @@ ContractHUD = {}
 ContractHUD.eventName = {}
 ContractHUD.ModName = g_currentModName
 ContractHUD.ModDirectory = g_currentModDirectory
-<<<<<<< Updated upstream
-ContractHUD.Version = "1.1.0.2"
-=======
 ContractHUD.Version = "1.1.0.3"
->>>>>>> Stashed changes
 
 ContractHUD.Colors = {}
 ContractHUD.Colors[1]  = {'col_white', {1, 1, 1, 1}}
@@ -25,9 +21,12 @@ ContractHUD.Colors[7]  = {'col_cyan', {0.0003, 0.5647, 0.9822, 1}}
 ContractHUD.Colors[8]  = {'col_orange', {1.0000, 0.1413, 0.0000, 1}}
 ContractHUD.Colors[9]  = {'col_dgreen', {0.1062, 0.5234, 0.1450, 1}}
 ContractHUD.Colors[10] = {'col_sorange', {1.0000, 0.1830, 0.0210, 1}}
+ContractHUD.Colors[11] = {'col_green2', {0.5059, 0.7647, 0.1961, 1}}
 
 ContractHUD.HeadlineColor = 7 -- put here color index from above
 ContractHUD.MissionTextColor = 1 -- default active mission color, put here color index from above
+ContractHUD.ColorSuccess = 11
+ContractHUD.ColorFail = 5
 
 ContractHUD.activeMissons = 0
 
@@ -88,10 +87,10 @@ function ContractHUD:draw()
                 -- handle color and completion
                 if contract.status == 2 and contract.success == true then  -- contract finished, set completion to 100% and text green
                     completion = 1
-                    textColor = 9  -- green
+                    textColor = ContractHUD.ColorSuccess  -- green
                 elseif contract.status == 2 and contract.success == false then  -- contract failed
                     completion = contract.completion
-                    textColor = 5  -- red
+                    textColor = ContractHUD.ColorFail  -- red
                 else  -- contract active, get current completion and set text color
                     completion = contract.completion
                     textColor = ContractHUD.MissionTextColor
@@ -177,7 +176,8 @@ function ContractHUD:translate(text)
 	local result = ""
 
 	if  text == "headline" then
-		result = g_currentMission.hud.l10n.texts.ui_pendingMissions
+		result = ContractHUD:firstToUpper(g_currentMission.hud.l10n.texts.fieldJob_active .. " " .. g_currentMission.hud.l10n.texts.ui_ingameMenuContracts)
+		--result = g_currentMission.hud.l10n.texts.ui_pendingMissions
 	elseif text == "mow_bale" then
 		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_baling
 	elseif text == "plow" then
