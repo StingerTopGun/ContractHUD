@@ -26,7 +26,7 @@ ContractHUD.Colors[12] = {'col_green3', {0.391, 0.521, 0.366, 1}}
 
 ContractHUD.HeadlineColor = 7 -- put here color index from above
 ContractHUD.MissionTextColor = 1 -- default active mission color, put here color index from above
-ContractHUD.ColorSuccess = 12
+ContractHUD.ColorSuccess = 9
 ContractHUD.ColorFail = 5
 
 ContractHUD.activeMissons = 0
@@ -141,9 +141,9 @@ function ContractHUD:draw()
                 elseif ContractHUD.displayMode == 1 then -- 1 = display without bars, with % number, with field work or fill type info - default
                     if contract.type.name == "supplyTransport" then
                         if completion == 0 then -- when 0%, display contracted liters
-                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatLitters(contract.contractLiters, 1) .. " " .. (g_currentMission.hud.l10n.unit_literShort or " l")
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(contract.contractLiters, true, false) .. " " .. (g_currentMission.hud.l10n.unit_literShort or " l")
                         else -- else display percentage
-                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatLitters(completion, nil) .. " %" -- set percentage to one dec like 95.6%
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " %" -- set percentage to one dec like 95.6%
                         end
                     else -- other then supplyTransport contracts
                         if completion == 0 then -- when 0%, display fruit type title
@@ -155,7 +155,7 @@ function ContractHUD:draw()
                                 outputText = field_text .. " - " .. field_work
                             end
                         else -- else display percentage
-                            outputText = field_text .. " - " .. ContractHUD:formatLitters(completion, nil) .. " %" -- set percentage to one dec like 95.6%
+                            outputText = field_text .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " %" -- set percentage to one dec like 95.6%
                         end
                     end
                 end
@@ -206,16 +206,15 @@ function ContractHUD:translate(text)
 	return result
 end
 
-function ContractHUD:formatLitters(completion, whole_number)
+function ContractHUD:formatNumber(number, whole_number, is_percentage)
 	local decimal_separator = g_currentMission.hud.l10n.decimalSeparator or "."
   	local thousands_grouping = g_currentMission.hud.l10n.thousandsGroupingChar or " "
-	local number =  math.floor(completion * 1000) / 10
-  	-- fhis fill format any number
-  	-- example
-    -- 1234 >> 1.234
-    -- 123456789.1234 >> 123.456.789
-    -- -123456789.1234 >> 123.456.789
 
+	if is_percentage then
+		number = math.floor(number * 1000) / 10
+	end
+
+  	-- fhis fill format any number, example: -123456789.1234 >> -123.456.789
   	local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
   	local result = ""
 
@@ -231,17 +230,6 @@ function ContractHUD:formatLitters(completion, whole_number)
   	-- reverse the int-string and append a comma to all blocks of 3 digits
   	int = int:reverse():gsub("(%d%d%d)", "%1" .. thousands_grouping)
 
-  	-- this will return exactly the same number
-  	-- reverse the int-string back remove an optional comma and put the
-  	-- optional minus and fractional part back
-  	--  int = int:reverse():gsub("(%d%d%d)", "%1,")
-
-  	-- reverse the int-string back remove an optional comma and put the
-  	-- optional minus and fractional part back
-  	-- return minus .. int:reverse():gsub("^,", "") .. fraction
-	--Receives a string and returns its length.
-
-
 	-- but I need only positive numbers without fraction and with dot separator
 	result = int:reverse():gsub("^" .. thousands_grouping, "")
 
@@ -249,8 +237,8 @@ function ContractHUD:formatLitters(completion, whole_number)
 	if whole_number then
     	return result
   	else
-    	return minus .. result  .. decimal_separator .. fraction
-  	end
+		return minus .. result  .. decimal_separator .. fraction
+	end
 end
 
 function ContractHUD:buildProgressBar(completion)
