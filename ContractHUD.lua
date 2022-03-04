@@ -8,7 +8,7 @@ ContractHUD = {}
 ContractHUD.eventName = {}
 ContractHUD.ModName = g_currentModName
 ContractHUD.ModDirectory = g_currentModDirectory
-ContractHUD.Version = "1.1.0.3"
+ContractHUD.Version = "1.1.0.4"
 
 ContractHUD.Colors = {}
 ContractHUD.Colors[1]  = {'col_white', {1, 1, 1, 1}}
@@ -22,10 +22,11 @@ ContractHUD.Colors[8]  = {'col_orange', {1.0000, 0.1413, 0.0000, 1}}
 ContractHUD.Colors[9]  = {'col_dgreen', {0.1062, 0.5234, 0.1450, 1}}
 ContractHUD.Colors[10] = {'col_sorange', {1.0000, 0.1830, 0.0210, 1}}
 ContractHUD.Colors[11] = {'col_green2', {0.5059, 0.7647, 0.1961, 1}}
+ContractHUD.Colors[12] = {'col_green3', {0.391, 0.521, 0.366, 1}}
 
 ContractHUD.HeadlineColor = 7 -- put here color index from above
 ContractHUD.MissionTextColor = 1 -- default active mission color, put here color index from above
-ContractHUD.ColorSuccess = 11
+ContractHUD.ColorSuccess = 12
 ContractHUD.ColorFail = 5
 
 ContractHUD.activeMissons = 0
@@ -142,7 +143,7 @@ function ContractHUD:draw()
                         if completion == 0 then -- when 0%, display contracted liters
                             outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatLitters(contract.contractLiters, 1) .. " " .. (g_currentMission.hud.l10n.unit_literShort or " l")
                         else -- else display percentage
-                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatLitters(math.floor(completion * 1000) / 10, nil) .. " %" -- set percentage to one dec like 95.6%
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatLitters(completion, nil) .. " %" -- set percentage to one dec like 95.6%
                         end
                     else -- other then supplyTransport contracts
                         if completion == 0 then -- when 0%, display fruit type title
@@ -154,7 +155,7 @@ function ContractHUD:draw()
                                 outputText = field_text .. " - " .. field_work
                             end
                         else -- else display percentage
-                            outputText = field_text .. " - " .. ContractHUD:formatLitters(math.floor(completion * 1000) / 10, nil) .. " %" -- set percentage to one dec like 95.6%
+                            outputText = field_text .. " - " .. ContractHUD:formatLitters(completion, nil) .. " %" -- set percentage to one dec like 95.6%
                         end
                     end
                 end
@@ -178,6 +179,8 @@ function ContractHUD:translate(text)
 	if  text == "headline" then
 		result = ContractHUD:firstToUpper(g_currentMission.hud.l10n.texts.fieldJob_active .. " " .. g_currentMission.hud.l10n.texts.ui_ingameMenuContracts)
 		--result = g_currentMission.hud.l10n.texts.ui_pendingMissions
+	elseif text == "field_no" then
+		result = g_currentMission.hud.l10n.texts.ui_fieldNo
 	elseif text == "mow_bale" then
 		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_baling
 	elseif text == "plow" then
@@ -196,8 +199,6 @@ function ContractHUD:translate(text)
 		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_fertilizing
 	elseif text == "transport" then
 		result = g_i18n:getText("CH_supply") or g_currentMission.hud.l10n.texts.fieldJob_jobType_transporting
-	elseif text == "field_no" then
-		result = g_currentMission.hud.l10n.texts.ui_fieldNo
 	else
 		result = "N/A"
 	end
@@ -205,9 +206,10 @@ function ContractHUD:translate(text)
 	return result
 end
 
-function ContractHUD:formatLitters(number, whole_number)
+function ContractHUD:formatLitters(completion, whole_number)
 	local decimal_separator = g_currentMission.hud.l10n.decimalSeparator or "."
   	local thousands_grouping = g_currentMission.hud.l10n.thousandsGroupingChar or " "
+	local number =  math.floor(completion * 1000) / 10
   	-- fhis fill format any number
   	-- example
     -- 1234 >> 1.234
@@ -216,6 +218,15 @@ function ContractHUD:formatLitters(number, whole_number)
 
   	local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
   	local result = ""
+
+	-- when fraction below 0.1, then vierd number is displayed like 60. %, we want 60.0 %
+	if fraction == nil or tonumber(fraction) == nil then
+		fraction = "0"
+	elseif tonumber(fraction) < 0.1 then
+		fraction = "0"
+	else
+		fraction = fraction:sub(2,string.len(fraction))
+	end
 
   	-- reverse the int-string and append a comma to all blocks of 3 digits
   	int = int:reverse():gsub("(%d%d%d)", "%1" .. thousands_grouping)
@@ -228,8 +239,6 @@ function ContractHUD:formatLitters(number, whole_number)
   	-- reverse the int-string back remove an optional comma and put the
   	-- optional minus and fractional part back
   	-- return minus .. int:reverse():gsub("^,", "") .. fraction
-
-	fraction = fraction:sub(2,string.len(fraction))
 	--Receives a string and returns its length.
 
 

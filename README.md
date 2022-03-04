@@ -9,6 +9,12 @@ Helpful small HUD displaying the current completion percentage of all active con
 ### Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (progress bar, percentage [default], hidden)
 
+Version 1.1.0.4: (the.geremy)
+- optimization and code clean up
+- correction of % display when decimal part below 0.1
+- try to match green color of completed mission message, no luck :D
+- back to default white color
+
 Version 1.1.0.3: (the.geremy)
 - added translation support
 
