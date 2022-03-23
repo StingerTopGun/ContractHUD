@@ -62,7 +62,7 @@ function ContractHUD:draw()
                     textColor = 1  -- white
                 end
 
-                outputText = contract.type["name"] .. " " .. " - " .. g_i18n:getText("CH_field") .. " " .. contract.field.fieldId .. " - " .. math.floor((completion * 100) + 0.5) .. " %"
+                outputText = contract.type["name"] .. " - " .. g_i18n:getText("CH_field") .. " " .. contract.field.fieldId .. " - " .. math.floor((completion * 100) + 0.5) .. " %"
 
                 -- generate status bar
                 if ContractHUD.displayMode ~= 1 then
