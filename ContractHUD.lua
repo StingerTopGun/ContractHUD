@@ -8,7 +8,7 @@ ContractHUD = {}
 ContractHUD.eventName = {}
 ContractHUD.ModName = g_currentModName
 ContractHUD.ModDirectory = g_currentModDirectory
-ContractHUD.Version = "1.1.0.4"
+ContractHUD.Version = "1.1.0.5"
 
 ContractHUD.Colors = {}
 ContractHUD.Colors[1]  = {'col_white', {1, 1, 1, 1}}
@@ -28,6 +28,10 @@ ContractHUD.HeadlineColor = 7 -- put here color index from above
 ContractHUD.MissionTextColor = 1 -- default active mission color, put here color index from above
 ContractHUD.ColorSuccess = 9
 ContractHUD.ColorFail = 5
+
+ContractHUD.FieldDisplay = false -- false => Field, true => Field No.
+
+ContractHUD.TransportDisplay = false -- false => Supply, true => Transporting
 
 ContractHUD.activeMissons = 0
 
@@ -180,7 +184,7 @@ function ContractHUD:translate(text)
 		result = ContractHUD:firstToUpper(g_currentMission.hud.l10n.texts.fieldJob_active .. " " .. g_currentMission.hud.l10n.texts.ui_ingameMenuContracts)
 		--result = g_currentMission.hud.l10n.texts.ui_pendingMissions
 	elseif text == "field_no" then
-		result = g_currentMission.hud.l10n.texts.ui_fieldNo
+		result = ContractHUD.FieldDisplay and g_currentMission.hud.l10n.texts.ui_fieldNo or g_i18n:getText("CH_field")
 	elseif text == "mow_bale" then
 		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_baling
 	elseif text == "plow" then
@@ -198,7 +202,7 @@ function ContractHUD:translate(text)
 	elseif text == "fertilize" then
 		result = g_currentMission.hud.l10n.texts.fieldJob_jobType_fertilizing
 	elseif text == "transport" then
-		result = g_i18n:getText("CH_supply") or g_currentMission.hud.l10n.texts.fieldJob_jobType_transporting
+		result = ContractHUD.TransportDisplay and g_currentMission.hud.l10n.texts.fieldJob_jobType_transporting or g_i18n:getText("CH_supply") 
 	else
 		result = "N/A"
 	end
@@ -215,7 +219,7 @@ function ContractHUD:formatNumber(number, whole_number, is_percentage)
 	end
 
   	-- fhis fill format any number, example: -123456789.1234 >> -123.456.789
-  	local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
+  	local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([' .. decimal_separator .. ']?%d*)')
   	local result = ""
 
 	-- when fraction below 0.1, then vierd number is displayed like 60. %, we want 60.0 %
