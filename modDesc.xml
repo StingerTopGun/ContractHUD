@@ -2,7 +2,7 @@
 <modDesc descVersion="63">
 
     <author>StingerTopGun, the.geremy</author>
-    <version>1.1.0.4</version>
+    <version>1.1.0.5</version>
 
     <title>
 		<en>Contract HUD</en>
@@ -22,11 +22,9 @@ ALT + M  -  Schalte zwischen 3 Anzeigemöglichkeiten (Voll, keine Fortschrittsba
 Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (full, no progressbar, hidden)
 
-Version 1.1.0.4: (the.geremy)
-- optimization and code clean up
-- correction of % display when decimal part below 0.1
-- try to match green color of completed mission message, no luck :D
-- back to default white color
+Version 1.1.0.5: (the.geremy)
+- added possibility to change field display from Field No. to Field (ContractHUD.lua line 32)
+- added possibility to change display of transport missions (ContractHUD.lua line 34)
 
 Version 1.1.0.3: (the.geremy)
 - added translation support
@@ -68,6 +66,11 @@ Version 1.1.0.0: (the.geremy)
 			<en><![CDATA[Contract HUD toggle]]></en>
             <cz><![CDATA[Contract HUD režim]]></cz>
 		</text>
+        <text name="CH_field">
+            <de><![CDATA[Feld]]></de>
+            <en><![CDATA[Field]]></en>
+            <cz><![CDATA[Pole]]></cz>
+        </text>        
         <text name="CH_supply">
             <de><![CDATA[Lieferung]]></de>
             <en><![CDATA[Supply]]></en>

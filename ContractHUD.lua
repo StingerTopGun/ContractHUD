@@ -36,10 +36,10 @@ ContractHUD.TransportDisplay = false -- false => Supply, true => Transporting
 ContractHUD.activeMissons = 0
 
 -- displayMode
--- 0 = display with bars, witout % number, with field work or fill type info
--- 1 = display without bars, with % number, with field work or fill type info - default
+-- 0 = display with bars, without % number, with field work or fill type info - default
+-- 1 = display without bars, with % number, with field work or fill type info
 -- 2 = hide HUD
-ContractHUD.displayMode = 1
+ContractHUD.displayMode = 0
 
 
 function ContractHUD:registerActionEvents()
