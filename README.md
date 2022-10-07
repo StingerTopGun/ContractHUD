@@ -8,7 +8,7 @@ Helpful small HUD displaying the current completion percentage of all active con
 ALT + M  -  Toggle between 3 possible modes (progress bar, percentage [default], hidden)
 
 Version 1.2.0.0: (the.geremy)
-- added dinamic background with default width and height, so it will not shrink under this values
+- added dynamic background with default width and height, so it will not shrink under this values
 - matching colors of contract with status and ingame notification message colors
 
 Version 1.1.0.4: (the.geremy)
