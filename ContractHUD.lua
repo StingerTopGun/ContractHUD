@@ -8,7 +8,7 @@ ContractHUD = {}
 ContractHUD.eventName = {}
 ContractHUD.ModName = g_currentModName
 ContractHUD.ModDirectory = g_currentModDirectory
-ContractHUD.Version = "1.2.0.0"
+ContractHUD.Version = "1.2.0.1"
 
 ContractHUD.Colors = {}
 ContractHUD.Colors[1]  = {'col_white', {1, 1, 1, 1}}
@@ -32,6 +32,7 @@ ContractHUD.horizontalMargin = 0.0018
 ContractHUD.verticalMargin = 0.0008
 ContractHUD.maxTextWidth = 0
 ContractHUD.defaultOverlayWidth = 0.062
+ContractHUD.displayModeChanged = false
 
 ContractHUD.HeadlineColor = 13 -- put here color index from above
 ContractHUD.MissionTextColor = 1 -- default active mission color, put here color index from above
@@ -227,7 +228,7 @@ function ContractHUD:draw()
             ContractHUD.overlay:setColor(unpack(self.Colors[2][2]))
             g_currentMission.hud.gameInfoDisplay:addChild(ContractHUD.overlay)
             ContractHUD.overlayIsRendered = true
-        elseif math.abs(ContractHUD.maxTextWidth - maxTextWidth) > ContractHUD.horizontalMargin or ContractHUD.activeMissons ~= countContracts then
+        elseif math.abs(ContractHUD.maxTextWidth - maxTextWidth) > ContractHUD.horizontalMargin or ContractHUD.activeMissons ~= countContracts or ContractHUD.displayModeChanged then
             overlayWidth = maxTextWidth + ContractHUD.horizontalMargin*2
             if overlayWidth < ContractHUD.defaultOverlayWidth then
                 overlayWidth = ContractHUD.defaultOverlayWidth
@@ -240,6 +241,8 @@ function ContractHUD:draw()
             overlayY = baseY - overlayHeight    
             ContractHUD.overlay:setPosition(overlayX, overlayY)
             ContractHUD.overlay:setDimension(overlayWidth, overlayHeight)
+
+            ContractHUD.displayModeChanged = false
         end
     
         ContractHUD.activeMissons = countContracts
@@ -452,6 +455,8 @@ function ContractHUD.toggleDisplayMode()
     else
         ContractHUD.displayMode = ContractHUD.displayMode + 1
     end
+
+    ContractHUD.displayModeChanged = true
 end
 
 addModEventListener(ContractHUD)

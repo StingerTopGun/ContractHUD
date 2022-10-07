@@ -2,7 +2,7 @@
 <modDesc descVersion="63">
 
     <author>StingerTopGun, the.geremy</author>
-    <version>1.1.0.5</version>
+    <version>1.2.0.1</version>
 
     <title>
 		<en>Contract HUD</en>
@@ -21,6 +21,9 @@ ALT + M  -  Schalte zwischen 3 Anzeigemöglichkeiten (Voll, keine Fortschrittsba
 
 Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (full, no progressbar, hidden)
+
+Version 1.2.0.1: (the.geremy)
+- update background when display mode changed
 
 Version 1.2.0.0: (the.geremy)
 - added dynamic background with default width and height, so it will not shrink under this values
