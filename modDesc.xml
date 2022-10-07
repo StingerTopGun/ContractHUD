@@ -22,6 +22,10 @@ ALT + M  -  Schalte zwischen 3 Anzeigemöglichkeiten (Voll, keine Fortschrittsba
 Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (full, no progressbar, hidden)
 
+Version 1.2.0.0: (the.geremy)
+- added dinamic background with default width and height, so it will not shrink under this values
+- matching colors of contract with status and ingame notification message colors
+
 Version 1.1.0.5: (the.geremy)
 - added possibility to change field display from Field No. to Field (ContractHUD.lua line 32)
 - added possibility to change display of transport missions (ContractHUD.lua line 34)

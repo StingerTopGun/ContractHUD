@@ -8,11 +8,11 @@ ContractHUD = {}
 ContractHUD.eventName = {}
 ContractHUD.ModName = g_currentModName
 ContractHUD.ModDirectory = g_currentModDirectory
-ContractHUD.Version = "1.1.0.5"
+ContractHUD.Version = "1.2.0.0"
 
 ContractHUD.Colors = {}
 ContractHUD.Colors[1]  = {'col_white', {1, 1, 1, 1}}
-ContractHUD.Colors[2]  = {'col_black', {0, 0, 0, 1}}
+ContractHUD.Colors[2]  = {'col_black', {0, 0, 0, 0.7}}
 ContractHUD.Colors[3]  = {'col_grey', {0.7411, 0.7450, 0.7411, 1}}
 ContractHUD.Colors[4]  = {'col_blue', {0.0044, 0.15, 0.6376, 1}}
 ContractHUD.Colors[5]  = {'col_red', {0.7835, 0.0034, 0.0030, 1}}
@@ -23,8 +23,17 @@ ContractHUD.Colors[9]  = {'col_dgreen', {0.1062, 0.5234, 0.1450, 1}}
 ContractHUD.Colors[10] = {'col_sorange', {1.0000, 0.1830, 0.0210, 1}}
 ContractHUD.Colors[11] = {'col_green2', {0.5059, 0.7647, 0.1961, 1}}
 ContractHUD.Colors[12] = {'col_green3', {0.391, 0.521, 0.366, 1}}
+ContractHUD.Colors[13]  = {'col_cyan2', {0.0, 0.7764, 0.9921, 1}}
 
-ContractHUD.HeadlineColor = 7 -- put here color index from above
+ContractHUD.background = 'dataS/menu/hud/ui_elements.png'
+ContractHUD.overlay = nil
+ContractHUD.overlayIsRendered = false
+ContractHUD.horizontalMargin = 0.0018
+ContractHUD.verticalMargin = 0.0008
+ContractHUD.maxTextWidth = 0
+ContractHUD.defaultOverlayWidth = 0.062
+
+ContractHUD.HeadlineColor = 13 -- put here color index from above
 ContractHUD.MissionTextColor = 1 -- default active mission color, put here color index from above
 ContractHUD.ColorSuccess = 9
 ContractHUD.ColorFail = 5
@@ -66,12 +75,12 @@ end
 
 function ContractHUD:draw()
     -- added condition to display info only if any active mission (the.geremy)
-	if g_client ~= nil and g_currentMission.hud.isVisible and ContractHUD.displayMode ~= 2 and ContractHUD.activeMissons ~= 0 then
+	if g_client ~= nil and g_currentMission.hud.isVisible and ContractHUD.displayMode ~= 2 and ContractHUD.activeMissons ~= 0 and not g_noHudModeEnabled and not g_sleepManager:getIsSleeping() then
 
 		local posX = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.x
         local posY = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.y
-		local size = g_currentMission.inGameMenu.hud.inputHelp.helpTextSize * 1.18 -- add 18%
-        posY = posY + g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.height - g_currentMission.inGameMenu.hud.inputHelp.helpTextSize
+		local size = g_currentMission.inGameMenu.hud.inputHelp.helpTextSize * 1.1 -- add 10%
+        posY = posY + g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.height - size
         posX = posX - ( g_currentMission.inGameMenu.hud.inputHelp.helpTextOffsetY * 2 )
 
         local outputText = ContractHUD:translate("headline") .. ": " .. ContractHUD.activeMissons
@@ -82,8 +91,14 @@ function ContractHUD:draw()
         local field_work = ""
         local fruitTypeName = ""
 
+        -- for boxOverlay
+        local baseX = posX
+        local baseY = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.y + g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.height
+        local maxTextWidth = 0.0
+
         -- print haadline
-        ContractHUD:renderText(posX, posY, size, outputText, false, ContractHUD.HeadlineColor)
+        ContractHUD:renderText(posX, posY, size, outputText, false, ContractHUD.HeadlineColor)--FSBaseMission.INGAME_NOTIFICATION_INFO) --ContractHUD.HeadlineColor)
+        maxTextWidth = getTextWidth(size, outputText)
         posY = posY - size  -- shift one line down because of headline
 
         for _, contract in ipairs(g_missionManager.missions) do
@@ -92,10 +107,10 @@ function ContractHUD:draw()
                 -- handle color and completion
                 if contract.status == 2 and contract.success == true then  -- contract finished, set completion to 100% and text green
                     completion = 1
-                    textColor = ContractHUD.ColorSuccess  -- green
+                    textColor = FSBaseMission.INGAME_NOTIFICATION_OK --ContractHUD.ColorSuccess  -- green
                 elseif contract.status == 2 and contract.success == false then  -- contract failed
                     completion = contract.completion
-                    textColor = ContractHUD.ColorFail  -- red
+                    textColor = FSBaseMission.INGAME_NOTIFICATION_CRITICAL --ContractHUD.ColorFail  -- red
                 else  -- contract active, get current completion and set text color
                     completion = contract.completion
                     textColor = ContractHUD.MissionTextColor
@@ -170,11 +185,78 @@ function ContractHUD:draw()
 
                 -- handle counting
                 countContracts = countContracts + 1
-            end
-        end
 
+                -- get max width of the text
+                if getTextWidth(size, outputText) > maxTextWidth then
+                    maxTextWidth = getTextWidth(size, outputText)
+                end
+            end
+        end   
+
+        local overlayX = 0   
+        local overlayY = 0
+        local overlayWidth = 0
+        local overlayHeight = 0
+
+        -- draw overlay if not exists
+        if not ContractHUD.overlayIsRendered then
+            overlayWidth = maxTextWidth + ContractHUD.horizontalMargin*2
+            if overlayWidth < ContractHUD.defaultOverlayWidth then
+                overlayWidth = ContractHUD.defaultOverlayWidth
+            end
+            overlayHeight = size * (countContracts + 1) + ContractHUD.verticalMargin + g_currentMission.inGameMenu.hud.inputHelp.helpTextOffsetY
+            --ContractHUD:printValue("overlayHeight", overlayHeight)
+            --ContractHUD:printValue("overlayWidth", overlayWidth)
+            if overlayHeight < g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.height then
+               overlayHeight = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.height
+            end
+            overlayX = baseX - overlayWidth + ContractHUD.horizontalMargin
+            overlayY = baseY - overlayHeight
+
+            -- debugging
+            --ContractHUD:printValue("overlayX", overlayX)
+            --ContractHUD:printValue("overlayY", overlayY)
+            --ContractHUD:printValue("overlayWidth", overlayWidth)
+            --ContractHUD:printValue("overlayHeight", overlayHeight)
+            --
+
+            ContractHUD.overlay = ContractHUD.createImageOverlay(ContractHUD.background, overlayX, overlayY, overlayWidth, overlayHeight)
+
+            ContractHUD.overlay:setUVs(g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.uvs)
+
+            ContractHUD.overlay:setColor(unpack(self.Colors[2][2]))
+            g_currentMission.hud.gameInfoDisplay:addChild(ContractHUD.overlay)
+            ContractHUD.overlayIsRendered = true
+        elseif math.abs(ContractHUD.maxTextWidth - maxTextWidth) > ContractHUD.horizontalMargin or ContractHUD.activeMissons ~= countContracts then
+            overlayWidth = maxTextWidth + ContractHUD.horizontalMargin*2
+            if overlayWidth < ContractHUD.defaultOverlayWidth then
+                overlayWidth = ContractHUD.defaultOverlayWidth
+            end
+            overlayHeight = size * (countContracts + 1) + ContractHUD.verticalMargin + g_currentMission.inGameMenu.hud.inputHelp.helpTextOffsetY
+            if overlayHeight < g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.height then
+               overlayHeight = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.height
+            end
+            overlayX = baseX - overlayWidth + ContractHUD.horizontalMargin
+            overlayY = baseY - overlayHeight    
+            ContractHUD.overlay:setPosition(overlayX, overlayY)
+            ContractHUD.overlay:setDimension(overlayWidth, overlayHeight)
+        end
+    
         ContractHUD.activeMissons = countContracts
-	end
+        ContractHUD.maxTextWidth = maxTextWidth
+    else
+        if ContractHUD.overlayIsRendered then
+            ContractHUD.overlay:delete()
+            ContractHUD.overlayIsRendered = false
+        end
+    
+    end
+end
+
+function ContractHUD.createImageOverlay(texturePath, baseX, baseY, baseWidth, baseHeight)
+
+    return HUDElement.new(Overlay.new(texturePath, baseX, baseY, baseWidth, baseHeight))
+
 end
 
 function ContractHUD:translate(text)
@@ -283,6 +365,12 @@ function ContractHUD:getFruitTypeName(fruitTypeIndex)
 end
 
 -- this function is for debugging purpose
+function ContractHUD:printValue(name, value)
+    -- print to log.txt
+    print("ContractHUD Info:  " .. name .. " >> " .. value)    
+end
+
+-- this function is for debugging purpose
 function ContractHUD:getTableKeys(tableObject)
     if tableObject ~= nil and type(tableObject) == "table" then
         local keyset={}
@@ -339,8 +427,14 @@ function ContractHUD:getRemainingTime(contract)
     return string.format("%02d:%02d:%02d", 0, 0, 0) -- return formated remianing time
 end
 
-function ContractHUD:renderText(x, y, size, text, bold, colorId)
-	setTextColor(unpack(self.Colors[colorId][2]))
+function ContractHUD:renderText(x, y, size, text, bold, textColor) --colorId )
+    if type(textColor) == 'table' then
+        setTextColor(unpack(textColor))
+    elseif textColor % 1 == 0 then
+       setTextColor(unpack(self.Colors[textColor][2]))
+    else
+       setTextColor(unpack(self.Colors[1][2])) -- set default color which is white
+    end
 	setTextBold(bold)
 	setTextAlignment(RenderText.ALIGN_RIGHT)
 	renderText(x, y, size, text)
