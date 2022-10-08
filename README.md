@@ -5,7 +5,7 @@ Helpful small HUD displaying the current completion percentage of all active con
 ![](screenshots/final_example.png?raw=true)
 
 ### Hotkeys:
-ALT + M  -  Toggle between 3 possible modes (progress bar, percentage [default], hidden)
+ALT + M  -  Toggle between 5 possible modes (display mode 0 is default)
 
 Version 1.2.0.5: (the.geremy)
 - added display modes
