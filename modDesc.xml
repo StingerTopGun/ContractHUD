@@ -2,7 +2,7 @@
 <modDesc descVersion="63">
 
     <author>StingerTopGun, the.geremy</author>
-    <version>1.2.0.5</version>
+    <version>1.2.0.6</version>
 
     <title>
 		<en>Contract HUD</en>
@@ -20,7 +20,12 @@ ALT + M  -  Schalte zwischen 3 Anzeigemöglichkeiten (Voll, keine Fortschrittsba
 		<en><![CDATA[Helpful small HUD displaying the current completion percentage of all active contracts
 
 Hotkeys:
-ALT + M  -  Toggle between 3 possible modes (full, no progressbar, hidden)
+ALT + M  -  Toggle between 5 possible modes (display mode 0 is default)
+
+Version 1.2.0.6: (the.geremy)
+- change in display mode 3
+- 3 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+    - transport mission - display crop type, if progress display % number instead of required amount also display destination
 
 Version 1.2.0.5: (the.geremy)
 - added display modes

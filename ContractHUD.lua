@@ -8,7 +8,7 @@ ContractHUD = {}
 ContractHUD.eventName = {}
 ContractHUD.ModName = g_currentModName
 ContractHUD.ModDirectory = g_currentModDirectory
-ContractHUD.Version = "1.2.0.5"
+ContractHUD.Version = "1.2.0.6"
 
 ContractHUD.Colors = {}
 ContractHUD.Colors[1]  = {'col_white', {1, 1, 1, 1}}
@@ -53,7 +53,7 @@ ContractHUD.activeMissons = 0
 -- 2 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
 --   - transport mission - display mission type and crop type, if progress display % number and bar instead of required amount
 -- 3 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
---   - transport mission - display crop type, display % number and also display destination
+--   - transport mission - display crop type, if progress display % number instead of required amount also display destination
 -- 4 = hide HUD
 ContractHUD.displayMode = 0
 
@@ -148,7 +148,7 @@ function ContractHUD:draw()
                 -- 2 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
                 --   - transport mission - display mission type and crop type, if progress display % number and bar instead of required amount
                 -- 3 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
-                --   - transport mission - display crop type, display % number and also display destination
+                --   - transport mission - display crop type, if progress display % number instead of required amount also display destination
                 -- 4 = hide HUD
                 if ContractHUD.displayMode == 0 then
                     if contract.type.name == "supplyTransport" then
@@ -212,8 +212,8 @@ function ContractHUD:draw()
                     end
                 elseif ContractHUD.displayMode == 3 then
                     if contract.type.name == "supplyTransport" then
-                        if completion == 0 then -- when 0%, display 0.0%
-                            outputText = field_work .. " (0.0 %) => " .. contract.sellingStation.uiName
+                        if completion == 0 then -- when 0%, display required amount
+                            outputText = field_work .. " (" .. ContractHUD:formatNumber(contract.contractLiters, true, false) .. " " .. (g_currentMission.hud.l10n.unit_literShort or " l") .. ") => " .. contract.sellingStation.uiName
                         else -- else display percentage and destination
                             outputText = field_work .. " (" .. ContractHUD:formatNumber(completion, false, true) .. " %) => " .. contract.sellingStation.uiName
                         end
