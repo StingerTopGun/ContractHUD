@@ -10,15 +10,20 @@ ALT + M  -  Toggle between 3 possible modes (progress bar, percentage [default],
 Version 1.2.0.5: (the.geremy)
 - added display modes
 - now you can choose from this display modes:
-    0 - field mission - display field number and field work type and also crop type if available, if progress display bar (default)
-      - transport mission - display mission type and crop type, if progress display bar instead of remaining time (default)
-    1 - field mission - display field number and field work type and also crop type if available, if progress display bar
-      - transport mission - display mission type and crop type, if progress display % number instead of required amount
-    2 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
-      - transport mission - display mission type and crop type, if progress display % number and bar instead of required amount
-    3 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
-      - transport mission - display crop type, display % number and also display destination
-    4 = hide HUD
+    <br>&ensp;Display mode: 0
+    <br>&ensp;&emsp;- field mission - display field number and field work type and also crop type if available, if progress display bar (default)
+    <br>&ensp;&emsp;- transport mission - display mission type and crop type, if progress display bar instead of remaining time (default)
+    <br>&ensp;Display mode: 1
+    <br>&ensp;&emsp;- field mission - display field number and field work type and also crop type if available, if progress display bar
+    <br>&ensp;&emsp;- transport mission - display mission type and crop type, if progress display % number instead of required amount
+    <br>&ensp;Display mode: 2
+    <br>&ensp;&emsp;- field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+    <br>&ensp;&emsp;- transport mission - display mission type and crop type, if progress display % number and bar instead of required amount
+    <br>&ensp;Display mode: 3
+    <br>&ensp;&emsp;- field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+    <br>&ensp;&emsp;- transport mission - display crop type, display % number and also display destination
+    <br>&ensp;Display mode: 4
+    <br>&ensp;&emsp;- HUD hidden
 
 Version 1.2.0.0: (the.geremy)
 - added dynamic background with default width and height, so it will not shrink under this values
