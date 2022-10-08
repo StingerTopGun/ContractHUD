@@ -1,11 +1,24 @@
 # FS22 Contract HUD
 
-Helpful small HUD displaying the current completion percentage of all active contracts
+Helpful small HUD displaying the current completion percentage of all active contracts. Hud is hidden if no active contracts!
 
-![](screenshots/example.png?raw=true)
+![](screenshots/final_example.png?raw=true)
 
 ### Hotkeys:
 ALT + M  -  Toggle between 3 possible modes (progress bar, percentage [default], hidden)
+
+Version 1.2.0.5: (the.geremy)
+- added display modes
+- now you can choose from this display modes:
+    0 - field mission - display field number and field work type and also crop type if available, if progress display bar (default)
+      - transport mission - display mission type and crop type, if progress display bar instead of remaining time (default)
+    1 - field mission - display field number and field work type and also crop type if available, if progress display bar
+      - transport mission - display mission type and crop type, if progress display % number instead of required amount
+    2 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+      - transport mission - display mission type and crop type, if progress display % number and bar instead of required amount
+    3 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+      - transport mission - display crop type, display % number and also display destination
+    4 = hide HUD
 
 Version 1.2.0.0: (the.geremy)
 - added dynamic background with default width and height, so it will not shrink under this values
