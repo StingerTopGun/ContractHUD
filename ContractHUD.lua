@@ -8,7 +8,7 @@ ContractHUD = {}
 ContractHUD.eventName = {}
 ContractHUD.ModName = g_currentModName
 ContractHUD.ModDirectory = g_currentModDirectory
-ContractHUD.Version = "1.2.0.1"
+ContractHUD.Version = "1.2.0.5"
 
 ContractHUD.Colors = {}
 ContractHUD.Colors[1]  = {'col_white', {1, 1, 1, 1}}
@@ -46,9 +46,15 @@ ContractHUD.TransportDisplay = false -- false => Supply, true => Transporting
 ContractHUD.activeMissons = 0
 
 -- displayMode
--- 0 = display with bars, without % number, with field work or fill type info - default
--- 1 = display without bars, with % number, with field work or fill type info
--- 2 = hide HUD
+-- 0 - field mission - display field number and field work type and also crop type if available, if progress display bar (default)
+--   - transport mission - display mission type and crop type, if progress display bar instead of remaining time (default)
+-- 1 - field mission - display field number and field work type and also crop type if available, if progress display bar
+--   - transport mission - display mission type and crop type, if progress display % number instead of required amount
+-- 2 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+--   - transport mission - display mission type and crop type, if progress display % number and bar instead of required amount
+-- 3 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+--   - transport mission - display crop type, display % number and also display destination
+-- 4 = hide HUD
 ContractHUD.displayMode = 0
 
 
@@ -76,7 +82,7 @@ end
 
 function ContractHUD:draw()
     -- added condition to display info only if any active mission (the.geremy)
-	if g_client ~= nil and g_currentMission.hud.isVisible and ContractHUD.displayMode ~= 2 and ContractHUD.activeMissons ~= 0 and not g_noHudModeEnabled and not g_sleepManager:getIsSleeping() then
+	if g_client ~= nil and g_currentMission.hud.isVisible and ContractHUD.displayMode ~= 4 and ContractHUD.activeMissons ~= 0 and not g_noHudModeEnabled and not g_sleepManager:getIsSleeping() then
 
 		local posX = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.x
         local posY = g_currentMission.hud.gameInfoDisplay.backgroundOverlay.overlay.y
@@ -135,9 +141,15 @@ function ContractHUD:draw()
                 end
 
                 -- displayMode
-                -- 0 = display with bars, witout % number, with field work or fill type info
-                -- 1 = display without bars, with % number, with field work or fill type info - default
-                -- 2 = hide HUD
+                -- 0 - field mission - display field number and field work type and also crop type if available, if progress display bar (default)
+                --   - transport mission - display mission type and crop type, if progress display bar instead of remaining time (default)
+                -- 1 - field mission - display field number and field work type and also crop type if available, if progress display bar
+                --   - transport mission - display mission type and crop type, if progress display % number instead of required amount
+                -- 2 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+                --   - transport mission - display mission type and crop type, if progress display % number and bar instead of required amount
+                -- 3 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+                --   - transport mission - display crop type, display % number and also display destination
+                -- 4 = hide HUD
                 if ContractHUD.displayMode == 0 then
                     if contract.type.name == "supplyTransport" then
                         if completion == 0 then -- when 0%, display remianing time
@@ -158,7 +170,7 @@ function ContractHUD:draw()
                             outputText = field_text .. " " .. ContractHUD:buildProgressBar(completion)
                         end
                     end
-                elseif ContractHUD.displayMode == 1 then -- 1 = display without bars, with % number, with field work or fill type info - default
+                elseif ContractHUD.displayMode == 1 then
                     if contract.type.name == "supplyTransport" then
                         if completion == 0 then -- when 0%, display contracted liters
                             outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(contract.contractLiters, true, false) .. " " .. (g_currentMission.hud.l10n.unit_literShort or " l")
@@ -176,6 +188,46 @@ function ContractHUD:draw()
                             end
                         else -- else display percentage
                             outputText = field_text .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " %" -- set percentage to one dec like 95.6%
+                        end
+                    end
+                elseif ContractHUD.displayMode == 2 then
+                    if contract.type.name == "supplyTransport" then
+                        if completion == 0 then -- when 0%, display contracted liters
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(contract.contractLiters, true, false) .. " " .. (g_currentMission.hud.l10n.unit_literShort or " l")
+                        else -- else display percentage and bar
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " % " .. ContractHUD:buildProgressBar(completion)
+                        end
+                    else -- other then supplyTransport contracts
+                        if completion == 0 then -- when 0%, display fruit type title
+                            if contract.type.name == "sow" then
+                                outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:getFruitTypeName(contract.fruitType)
+                            elseif contract.type.name == "harvest" then
+                                outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:getFillTypeTitle(contract.fillType)
+                            else
+                                outputText = field_text .. " - " .. field_work
+                            end
+                        else -- else display percentage and bar
+                            outputText = field_text .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " % " .. ContractHUD:buildProgressBar(completion)
+                        end
+                    end
+                elseif ContractHUD.displayMode == 3 then
+                    if contract.type.name == "supplyTransport" then
+                        if completion == 0 then -- when 0%, display 0.0%
+                            outputText = field_work .. " (0.0 %) => " .. contract.sellingStation.uiName
+                        else -- else display percentage and destination
+                            outputText = field_work .. " (" .. ContractHUD:formatNumber(completion, false, true) .. " %) => " .. contract.sellingStation.uiName
+                        end
+                    else -- other then supplyTransport contracts
+                        if completion == 0 then -- when 0%, display fruit type title
+                            if contract.type.name == "sow" then
+                                outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:getFruitTypeName(contract.fruitType)
+                            elseif contract.type.name == "harvest" then
+                                outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:getFillTypeTitle(contract.fillType)
+                            else
+                                outputText = field_text .. " - " .. field_work
+                            end
+                        else -- else display percentage and bar
+                            outputText = field_text .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " % " .. ContractHUD:buildProgressBar(completion)
                         end
                     end
                 end
@@ -450,7 +502,7 @@ end
 
 function ContractHUD.toggleDisplayMode()
     -- keep it simple
-    if ContractHUD.displayMode >= 2 then  -- 2 = hidden, highest value
+    if ContractHUD.displayMode >= 4 then  -- 2 = hidden, highest value
         ContractHUD.displayMode = 0
     else
         ContractHUD.displayMode = ContractHUD.displayMode + 1
