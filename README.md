@@ -7,6 +7,12 @@ Helpful small HUD displaying the current completion percentage of all active con
 ### Hotkeys:
 ALT + M&ensp;=>&ensp;Toggle between 5 possible modes (display mode 0 is default)
 
+Version 1.2.0.6: (the.geremy)
+- change in display mode 3:
+    <br>&ensp;Display mode: 3
+    <br>&ensp;&emsp;- field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+    <br>&ensp;&emsp;- transport mission - display crop type, if progress display % number instead of required amount also display destination
+
 Version 1.2.0.5: (the.geremy)
 - added display modes
 - now you can choose from this display modes:
