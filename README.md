@@ -7,6 +7,13 @@ Helpful small HUD displaying the current completion percentage of all active con
 ### Hotkeys:
 ALT + M&ensp;=>&ensp;Toggle between 5 possible modes (display mode 0 is default)
 
+If you dont want to display decimals in percentage value, open zip file and change line 46 in ContractHUD.lua file:
+- from:&emsp;ContractHUD.displayDecimals = true
+- to:&emsp;&emsp;ContractHUD.displayDecimals = false
+
+Version 1.2.0.7: (the.geremy)
+- formating number error fixed
+
 Version 1.2.0.6: (the.geremy)
 - change in display mode 3:
     <br>&ensp;Display mode: 3
