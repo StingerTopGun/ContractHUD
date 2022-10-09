@@ -8,7 +8,7 @@ ContractHUD = {}
 ContractHUD.eventName = {}
 ContractHUD.ModName = g_currentModName
 ContractHUD.ModDirectory = g_currentModDirectory
-ContractHUD.Version = "1.2.0.6"
+ContractHUD.Version = "1.2.0.7"
 
 ContractHUD.Colors = {}
 ContractHUD.Colors[1]  = {'col_white', {1, 1, 1, 1}}
@@ -42,6 +42,8 @@ ContractHUD.ColorFail = 5
 ContractHUD.FieldDisplay = false -- false => Field, true => Field No.
 
 ContractHUD.TransportDisplay = false -- false => Supply, true => Transporting
+
+ContractHUD.displayDecimals = true -- display or not display decimal in percentage => 8 % or 8.2 %
 
 ContractHUD.activeMissons = 0
 
@@ -173,9 +175,9 @@ function ContractHUD:draw()
                 elseif ContractHUD.displayMode == 1 then
                     if contract.type.name == "supplyTransport" then
                         if completion == 0 then -- when 0%, display contracted liters
-                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(contract.contractLiters, true, false) .. " " .. (g_currentMission.hud.l10n.unit_literShort or " l")
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(contract.contractLiters, true, false)
                         else -- else display percentage
-                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " %" -- set percentage to one dec like 95.6%
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(completion, false, true)
                         end
                     else -- other then supplyTransport contracts
                         if completion == 0 then -- when 0%, display fruit type title
@@ -187,15 +189,15 @@ function ContractHUD:draw()
                                 outputText = field_text .. " - " .. field_work
                             end
                         else -- else display percentage
-                            outputText = field_text .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " %" -- set percentage to one dec like 95.6%
+                            outputText = field_text .. " - " .. ContractHUD:formatNumber(completion, false, true)
                         end
                     end
                 elseif ContractHUD.displayMode == 2 then
                     if contract.type.name == "supplyTransport" then
                         if completion == 0 then -- when 0%, display contracted liters
-                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(contract.contractLiters, true, false) .. " " .. (g_currentMission.hud.l10n.unit_literShort or " l")
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(contract.contractLiters, true, false)
                         else -- else display percentage and bar
-                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " % " .. ContractHUD:buildProgressBar(completion)
+                            outputText = field_text .. " - " .. field_work .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " " .. ContractHUD:buildProgressBar(completion)
                         end
                     else -- other then supplyTransport contracts
                         if completion == 0 then -- when 0%, display fruit type title
@@ -207,15 +209,15 @@ function ContractHUD:draw()
                                 outputText = field_text .. " - " .. field_work
                             end
                         else -- else display percentage and bar
-                            outputText = field_text .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " % " .. ContractHUD:buildProgressBar(completion)
+                            outputText = field_text .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " " .. ContractHUD:buildProgressBar(completion)
                         end
                     end
                 elseif ContractHUD.displayMode == 3 then
                     if contract.type.name == "supplyTransport" then
                         if completion == 0 then -- when 0%, display required amount
-                            outputText = field_work .. " (" .. ContractHUD:formatNumber(contract.contractLiters, true, false) .. " " .. (g_currentMission.hud.l10n.unit_literShort or " l") .. ") => " .. contract.sellingStation.uiName
+                            outputText = field_work .. " (" .. ContractHUD:formatNumber(contract.contractLiters, true, false) .. ") => " .. contract.sellingStation.uiName
                         else -- else display percentage and destination
-                            outputText = field_work .. " (" .. ContractHUD:formatNumber(completion, false, true) .. " %) => " .. contract.sellingStation.uiName
+                            outputText = field_work .. " (" .. ContractHUD:formatNumber(completion, false, true) .. ") => " .. contract.sellingStation.uiName
                         end
                     else -- other then supplyTransport contracts
                         if completion == 0 then -- when 0%, display fruit type title
@@ -227,7 +229,7 @@ function ContractHUD:draw()
                                 outputText = field_text .. " - " .. field_work
                             end
                         else -- else display percentage and bar
-                            outputText = field_text .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " % " .. ContractHUD:buildProgressBar(completion)
+                            outputText = field_text .. " - " .. ContractHUD:formatNumber(completion, false, true) .. " " .. ContractHUD:buildProgressBar(completion)
                         end
                     end
                 end
@@ -347,39 +349,31 @@ function ContractHUD:translate(text)
 	return result
 end
 
-function ContractHUD:formatNumber(number, whole_number, is_percentage)
-	local decimal_separator = g_currentMission.hud.l10n.decimalSeparator or "."
-  	local thousands_grouping = g_currentMission.hud.l10n.thousandsGroupingChar or " "
+function ContractHUD:formatNumber(number, is_whole_number, is_percentage)
+    local decimal_separator = g_currentMission.hud.l10n.decimalSeparator or "."
+    local thousands_grouping = g_currentMission.hud.l10n.thousandsGroupingChar or " "
 
-	if is_percentage then
-		number = math.floor(number * 1000) / 10
-	end
-
-  	-- fhis fill format any number, example: -123456789.1234 >> -123.456.789
-  	local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([' .. decimal_separator .. ']?%d*)')
-  	local result = ""
-
-	-- when fraction below 0.1, then vierd number is displayed like 60. %, we want 60.0 %
-	if fraction == nil or tonumber(fraction) == nil then
-		fraction = "0"
-	elseif tonumber(fraction) < 0.1 then
-		fraction = "0"
-	else
-		fraction = fraction:sub(2,string.len(fraction))
-	end
-
-  	-- reverse the int-string and append a comma to all blocks of 3 digits
-  	int = int:reverse():gsub("(%d%d%d)", "%1" .. thousands_grouping)
-
-	-- but I need only positive numbers without fraction and with dot separator
-	result = int:reverse():gsub("^" .. thousands_grouping, "")
-
-	--return result:gsub(",", ".") .. " l"
-	if whole_number then
-    	return result
-  	else
-		return minus .. result  .. decimal_separator .. fraction
-	end
+    if is_whole_number then
+        local s = string.format("%d", math.floor(number))
+        local pos = string.len(s) % 3
+        if pos == 0 then pos = 3 end
+        return string.sub(s, 1, pos) .. string.gsub(string.sub(s, pos+1), "(...)", "" .. thousands_grouping .. "%1") .. " " .. (nil or "l")
+    elseif is_percentage then    
+        if number == 1 then
+            return "100 %"
+        else
+            number = ContractHUD.displayDecimals and math.floor(number * 1000) / 10 or math.floor(number * 100)
+            local per, n = string.gsub(tostring(number),"[\\.]",decimal_separator)        
+            if not string.find(number, "[\\.]") and ContractHUD.displayDecimals then
+                per = tostring(per) .. ".0 %"
+            else
+                per = tostring(per) .. " %"
+            end
+            return per
+        end
+    else
+        return number
+    end
 end
 
 function ContractHUD:buildProgressBar(completion)
