@@ -19,6 +19,9 @@ If you want to change default display mode, open zip file and change line 60 in 
 - from:&emsp;ContractHUD.displayMode = 0
 - to:&emsp;&emsp;ContractHUD.displayMode = 3 -- mode number, in this example I want to have display mode 3 as default
 
+Version 1.2.0.8: (the.geremy)
+- some minor adjustments
+
 Version 1.2.0.7: (the.geremy)
 - formating number error fixed
 
