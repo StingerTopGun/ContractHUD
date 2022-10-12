@@ -8,7 +8,7 @@ ContractHUD = {}
 ContractHUD.eventName = {}
 ContractHUD.ModName = g_currentModName
 ContractHUD.ModDirectory = g_currentModDirectory
-ContractHUD.Version = "1.2.0.7"
+ContractHUD.Version = "1.2.0.8"
 
 ContractHUD.Colors = {}
 ContractHUD.Colors[1]  = {'col_white', {1, 1, 1, 1}}
@@ -34,7 +34,7 @@ ContractHUD.maxTextWidth = 0
 ContractHUD.defaultOverlayWidth = 0.062
 ContractHUD.displayModeChanged = false
 
-ContractHUD.HeadlineColor = 13 -- put here color index from above
+ContractHUD.HeadlineColor = 7 -- put here color index from above
 ContractHUD.MissionTextColor = 1 -- default active mission color, put here color index from above
 ContractHUD.ColorSuccess = 9
 ContractHUD.ColorFail = 5
@@ -57,7 +57,7 @@ ContractHUD.activeMissons = 0
 -- 3 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
 --   - transport mission - display crop type, if progress display % number instead of required amount also display destination
 -- 4 = hide HUD
-ContractHUD.displayMode = 0
+ContractHUD.displayMode = 3
 
 
 function ContractHUD:registerActionEvents()
@@ -357,7 +357,7 @@ function ContractHUD:formatNumber(number, is_whole_number, is_percentage)
         local s = string.format("%d", math.floor(number))
         local pos = string.len(s) % 3
         if pos == 0 then pos = 3 end
-        return string.sub(s, 1, pos) .. string.gsub(string.sub(s, pos+1), "(...)", "" .. thousands_grouping .. "%1") .. " " .. (nil or "l")
+        return string.sub(s, 1, pos) .. string.gsub(string.sub(s, pos+1), "(...)", "" .. thousands_grouping .. "%1") .. " " .. (g_currentMission.hud.l10n.unit_literShort or "l")
     elseif is_percentage then    
         if number == 1 then
             return "100 %"
