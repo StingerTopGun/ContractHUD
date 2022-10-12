@@ -11,6 +11,14 @@ If you dont want to display decimals in percentage value, open zip file and chan
 - from:&emsp;ContractHUD.displayDecimals = true
 - to:&emsp;&emsp;ContractHUD.displayDecimals = false
 
+If you want headline to match cyan game color, open zip file and change line 37 in ContractHUD.lua file:
+- from:&emsp;ContractHUD.HeadlineColor = 13
+- to:&emsp;&emsp;ContractHUD.HeadlineColor = 7
+
+If you want to change default display mode, open zip file and change line 60 in ContractHUD.lua file:
+- from:&emsp;ContractHUD.displayMode = 0
+- to:&emsp;&emsp;ContractHUD.displayMode = 3 -- mode number, in this example I want to have display mode 3 as default
+
 Version 1.2.0.7: (the.geremy)
 - formating number error fixed
 
