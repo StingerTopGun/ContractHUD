@@ -19,6 +19,27 @@ If you want to change default display mode, open zip file and change line 60 in 
 - from:&emsp;ContractHUD.displayMode = 0
 - to:&emsp;&emsp;ContractHUD.displayMode = 3 -- mode number, in this example I want to have display mode 3 as default
 
+Version 1.2.1.0: (the.geremy)
+- corrected error when weather has two icons and overlay will not adjust
+- added alert time, when remaining mission time is below this value color of contract will change
+- when remaining mission time is below 1 minute color will also change
+- horizontal marin of overlay is bit bigger
+- display mode 5 is more talkative (default)
+- now you can choose from this display modes:
+    0 - field mission - display field number and field work type and also crop type if available, if progress display bar
+      - transport mission - display mission type and crop type, if progress display bar instead of remaining time
+    1 - field mission - display field number and field work type and also crop type if available, if progress display bar
+      - transport mission - display mission type and crop type, if progress display % number instead of required amount
+    2 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+      - transport mission - display mission type and crop type, if progress display % number and bar instead of required amount
+    3 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+      - transport mission - display crop type, if progress display % number instead of required amount also display destination
+    4 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+      - transport mission - display crop type, if progress display % number instead of required amount also display destination and remaining time
+    5 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar (default)
+      - transport mission - display crop type, if progress display remaining amount instead of required amount also display destination and remaining time (default)
+    6 = hide HUD
+
 Version 1.2.0.8: (the.geremy)
 - some minor adjustments
 
