@@ -1,26 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="63">
 
-    <author>StingerTopGun</author>
-    <version>1.0.0.0</version>
+    <author>StingerTopGun, the.geremy</author>
+    <version>1.2.1.0</version>
 
     <title>
-		<en>Contract HUD</en>	
+		<en>Contract HUD</en>
 	</title>
 
 	<iconFilename>modIcon.dds</iconFilename>
-	
+
 	<multiplayer supported="true"/>
-    
+
 	<description>
         <de><![CDATA[Hilfreiche kleine HUD Anzeige des aktuellen Fertigstellungsgrades aller aktiver Verträge
 
 Steuerung:
-ALT + M  -  Schalte zwischen 3 Anzeigemöglichkeiten (Voll, keine Fortschrittsbalken, Aus)]]></de>
+ALT + M  -  Schalte zwischen 6 Anzeigemöglichkeiten (Voll, keine Fortschrittsbalken, Aus)]]></de>
 		<en><![CDATA[Helpful small HUD displaying the current completion percentage of all active contracts
-        
+
 Hotkeys:
-ALT + M  -  Toggle between 3 possible modes (full, no progressbar, hidden)]]></en>
+ALT + M  -  Toggle between 6 possible modes (display mode 0 is default)
+
+Version 1.2.1.0: (the.geremy)
+- corrected error when weather has two icons and overlay will not adjust
+- added alert time, when remaining mission time is below this value color of contract will change
+- when remaining mission time is below 1 minute color will also change
+- horizontal marin of overlay is bit bigger
+- display mode 5 is more talkative (default)
+- now you can choose from this display modes:
+    0 - field mission - display field number and field work type and also crop type if available, if progress display bar
+      - transport mission - display mission type and crop type, if progress display bar instead of remaining time
+    1 - field mission - display field number and field work type and also crop type if available, if progress display bar
+      - transport mission - display mission type and crop type, if progress display % number instead of required amount
+    2 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+      - transport mission - display mission type and crop type, if progress display % number and bar instead of required amount
+    3 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+      - transport mission - display crop type, if progress display % number instead of required amount also display destination
+    4 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar
+      - transport mission - display crop type, if progress display % number instead of required amount also display destination and remaining time
+    5 - field mission - display field number and field work type and also crop type if available, if progress display % number and bar (default)
+      - transport mission - display crop type, if progress display remaining amount instead of required amount also display destination and remaining time (default)
+    6 = hide HUD
+
+Version 1.2.0.8: (the.geremy)
+- some minor adjustments
+
+Version 1.2.0.7: (the.geremy)
+- formating number error fixed
+
+]]></en>
     </description>
 
 	<extraSourceFiles>
@@ -31,14 +60,17 @@ ALT + M  -  Toggle between 3 possible modes (full, no progressbar, hidden)]]></e
 		<text name="input_CH_toggle_displaymode">
 			<de><![CDATA[Contract HUD umschalten]]></de>
 			<en><![CDATA[Contract HUD toggle]]></en>
+            <cz><![CDATA[Contract HUD režim]]></cz>
 		</text>
         <text name="CH_field">
             <de><![CDATA[Feld]]></de>
             <en><![CDATA[Field]]></en>
-        </text>
-        <text name="CH_headline">
-            <de><![CDATA[Aktive Verträge: ]]></de>
-            <en><![CDATA[Active Contracts: ]]></en>
+            <cz><![CDATA[Pole]]></cz>
+        </text>        
+        <text name="CH_supply">
+            <de><![CDATA[Lieferung]]></de>
+            <en><![CDATA[Supply]]></en>
+            <cz><![CDATA[Dodávka]]></cz>
         </text>
 	</l10n>
 
